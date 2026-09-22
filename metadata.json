@@ -1,0 +1,6 @@
+{
+  "name": "Diwali Patakas Ledger",
+  "description": "Multi-partner tamper-resistant cash and inventory tracking for seasonal Diwali firecracker stalls with audit trail, cash reconciliation, and season closure.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

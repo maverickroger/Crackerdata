@@ -1,0 +1,220 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User profile with role assignment (admin or member)",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "member"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "displayName", "email", "role"]
+    },
+    "Item": {
+      "title": "Firecracker Item",
+      "description": "Stock catalog item with cost price, selling price, and low-stock threshold",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "unit": { "type": "string" },
+        "costPrice": { "type": "number" },
+        "sellingPrice": { "type": "number" },
+        "lowStockThreshold": { "type": "number" }
+      },
+      "required": ["id", "name", "costPrice", "sellingPrice"]
+    },
+    "Purchase": {
+      "title": "Stock Purchase",
+      "description": "Purchase entry with mandatory bill/receipt photo and supplier details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "itemId": { "type": "string" },
+        "itemName": { "type": "string" },
+        "quantity": { "type": "number" },
+        "costPerUnit": { "type": "number" },
+        "totalCost": { "type": "number" },
+        "supplierName": { "type": "string" },
+        "date": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "photoUrl": { "type": "string" },
+        "photoTimestamp": { "type": "string" },
+        "loggedByUid": { "type": "string" },
+        "loggedByName": { "type": "string" },
+        "isDeleted": { "type": "boolean" }
+      },
+      "required": ["id", "itemName", "quantity", "totalCost", "photoUrl", "loggedByUid"]
+    },
+    "Sale": {
+      "title": "Firecracker Sale",
+      "description": "Sale transaction with cash or FamPay digital payment",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "itemId": { "type": "string" },
+        "itemName": { "type": "string" },
+        "quantity": { "type": "number" },
+        "unitPrice": { "type": "number" },
+        "totalPrice": { "type": "number" },
+        "paymentType": { "type": "string", "enum": ["cash", "fampay"] },
+        "isBulkSale": { "type": "boolean" },
+        "photoUrl": { "type": "string" },
+        "photoTimestamp": { "type": "string" },
+        "date": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "loggedByUid": { "type": "string" },
+        "loggedByName": { "type": "string" },
+        "basketId": { "type": "string" },
+        "isDeleted": { "type": "boolean" }
+      },
+      "required": ["id", "itemName", "quantity", "totalPrice", "paymentType", "loggedByUid"]
+    },
+    "Expense": {
+      "title": "Operational Expense",
+      "description": "Stall expense entry (transport, rental, packaging, misc)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "category": { "type": "string" },
+        "amount": { "type": "number" },
+        "paymentType": { "type": "string", "enum": ["cash", "fampay"] },
+        "date": { "type": "string" },
+        "note": { "type": "string" },
+        "photoUrl": { "type": "string" },
+        "loggedByUid": { "type": "string" },
+        "loggedByName": { "type": "string" },
+        "isDeleted": { "type": "boolean" }
+      },
+      "required": ["id", "category", "amount", "paymentType", "loggedByUid"]
+    },
+    "DamagedStock": {
+      "title": "Damaged Stock",
+      "description": "Log for damaged or wasted firecrackers reducing inventory without skewing revenue",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "itemId": { "type": "string" },
+        "itemName": { "type": "string" },
+        "quantity": { "type": "number" },
+        "reason": { "type": "string" },
+        "date": { "type": "string" },
+        "photoUrl": { "type": "string" },
+        "loggedByUid": { "type": "string" },
+        "isDeleted": { "type": "boolean" }
+      },
+      "required": ["id", "itemId", "quantity", "reason", "loggedByUid"]
+    },
+    "CashHandover": {
+      "title": "Cash Handover Confirmation",
+      "description": "Two-party cash transfer trail with explicit recipient confirmation",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fromUid": { "type": "string" },
+        "fromName": { "type": "string" },
+        "toUid": { "type": "string" },
+        "toName": { "type": "string" },
+        "amount": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "confirmed", "rejected"] },
+        "initiatedAt": { "type": "string" },
+        "confirmedAt": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "required": ["id", "fromUid", "toUid", "amount", "status"]
+    },
+    "AuditLog": {
+      "title": "Immutable Audit Log Record",
+      "description": "Tamper-evident log of changes made to any transaction or master entity",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "entryId": { "type": "string" },
+        "collectionType": { "type": "string" },
+        "action": { "type": "string" },
+        "reason": { "type": "string" },
+        "changedByUid": { "type": "string" },
+        "changedByName": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "entryId", "action", "reason", "changedByUid", "timestamp"]
+    },
+    "DailySeal": {
+      "title": "Daily Close and Cash Reconciliation Seal",
+      "description": "End-of-day cryptographic checksum and physical cash discrepancy audit",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string" },
+        "closedByUid": { "type": "string" },
+        "closedByName": { "type": "string" },
+        "closedAt": { "type": "string" },
+        "totalSales": { "type": "number" },
+        "totalExpenses": { "type": "number" },
+        "totalPurchases": { "type": "number" },
+        "expectedCash": { "type": "number" },
+        "physicalCashCounted": { "type": "number" },
+        "discrepancy": { "type": "number" },
+        "checksum": { "type": "string" }
+      },
+      "required": ["date", "closedByUid", "checksum", "expectedCash", "physicalCashCounted"]
+    },
+    "SeasonConfig": {
+      "title": "Season Closure Signoff",
+      "description": "Diwali selling season status and 4-partner unanimous digital signoffs",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "seasonYear": { "type": "number" },
+        "seasonName": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "closed"] }
+      },
+      "required": ["id", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": { "$ref": "User" },
+      "description": "User profiles and permissions"
+    },
+    "/items/{itemId}": {
+      "schema": { "$ref": "Item" },
+      "description": "Firecracker catalog and stock thresholds"
+    },
+    "/purchases/{purchaseId}": {
+      "schema": { "$ref": "Purchase" },
+      "description": "Inventory stock purchase bills"
+    },
+    "/sales/{saleId}": {
+      "schema": { "$ref": "Sale" },
+      "description": "Sales transactions"
+    },
+    "/expenses/{expenseId}": {
+      "schema": { "$ref": "Expense" },
+      "description": "Daily operational expenses"
+    },
+    "/damaged_stock/{id}": {
+      "schema": { "$ref": "DamagedStock" },
+      "description": "Damaged or spoiled fireworks inventory logs"
+    },
+    "/cash_handovers/{handoverId}": {
+      "schema": { "$ref": "CashHandover" },
+      "description": "Cash handover and custody transfers"
+    },
+    "/audit_logs/{logId}": {
+      "schema": { "$ref": "AuditLog" },
+      "description": "Append-only immutable audit trail"
+    },
+    "/daily_seals/{date}": {
+      "schema": { "$ref": "DailySeal" },
+      "description": "End-of-day checksum and cash counts"
+    },
+    "/season_config/{configId}": {
+      "schema": { "$ref": "SeasonConfig" },
+      "description": "Diwali season master lock and 4-partner sign-offs"
+    }
+  }
+}
